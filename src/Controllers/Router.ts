@@ -25,3 +25,5 @@ class Router {
 
     refreshUserToken(req: Request, res: Response) {}
 }
+
+export default new Router();
