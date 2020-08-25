@@ -5,13 +5,13 @@ class Server {
 
     constructor() {
         this.app = express();
-        this.routes();
         this.middlewares();
+        this.routes();
     }
 
-    middlewares() {}
+    public middlewares() {}
 
-    routes() {}
+    public routes() {}
 }
 
 export default new Server();
