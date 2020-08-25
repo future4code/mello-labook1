@@ -1,29 +1,53 @@
 import { Request, Response } from 'express';
+import Authenticator from '../Services/Authenticator';
+import HashManager from '../Services/HashManager';
+import IdGenerator from '../Services/IdGenerator';
 
 class Router {
-    signUp(req: Request, res: Response) {}
+    async signUp(req: Request, res: Response) {
+        try {
+            const { email, name, password } = req.body;
 
-    login(req: Request, res: Response) {}
+            const id = IdGenerator.generateId();
 
-    doFriendship(req: Request, res: Response) {}
+            const hashPassword = await HashManager.hash(password);
 
-    undoFriendship(req: Request, res: Response) {}
+            //await UserDatabase.createUser(id, email, name, hashPassword);
 
-    createPost(req: Request, res: Response) {}
+            const token = Authenticator.generateToken({ id });
 
-    getFeed(req: Request, res: Response) {}
+            res.status(201).send({
+                message: 'User creator successfuly',
+                token,
+            });
+        } catch (error) {
+            res.status(400).send({
+                message: error.message,
+            });
+        }
+    }
 
-    getFeedByyType(req: Request, res: Response) {}
+    async login(req: Request, res: Response) {}
 
-    getFeedByPage(req: Request, res: Response) {}
+    async doFriendship(req: Request, res: Response) {}
 
-    likePost(req: Request, res: Response) {}
+    async undoFriendship(req: Request, res: Response) {}
 
-    unlikePost(req: Request, res: Response) {}
+    async createPost(req: Request, res: Response) {}
 
-    commentPost(req: Request, res: Response) {}
+    async getFeed(req: Request, res: Response) {}
 
-    refreshUserToken(req: Request, res: Response) {}
+    async getFeedByyType(req: Request, res: Response) {}
+
+    async getFeedByPage(req: Request, res: Response) {}
+
+    async likePost(req: Request, res: Response) {}
+
+    async unlikePost(req: Request, res: Response) {}
+
+    async commentPost(req: Request, res: Response) {}
+
+    async refreshUserToken(req: Request, res: Response) {}
 }
 
 export default new Router();

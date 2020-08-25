@@ -4,7 +4,7 @@
     "description": "",
     "main": "./build/src/index.js",
     "scripts": {
-        "start": "node ./build/src/index.js",
+        "start": "nodemon ./build/src/index.js",
         "build": "tsc && node ./build/src/index.js"
     },
     "author": "",
