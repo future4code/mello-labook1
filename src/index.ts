@@ -1,6 +1,9 @@
 import Server from './server';
+import dotenv from 'dotenv';
 
 const localhostPort = '8535';
+
+dotenv.config();
 
 const port = process.env.PORT || localhostPort;
 
