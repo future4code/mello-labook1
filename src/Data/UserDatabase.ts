@@ -25,6 +25,22 @@ class UserDatabase extends BaseDatabase {
                 throw new Error('This user already exists');
         }
     }
+
+    public async getUserByEmail(email: string) {
+        try {
+            const result = await this.getConnection()
+                .select('*')
+                .from(UserDatabase.TABLE_NAME)
+                .where({ email });
+
+            if (result[0] === undefined)
+                throw new Error('This user does not exist');
+
+            return result[0];
+        } catch (error) {
+            throw error;
+        }
+    }
 }
 
 export default new UserDatabase();
