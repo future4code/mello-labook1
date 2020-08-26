@@ -25,12 +25,12 @@ class UserDatabase extends BaseDatabase {
         }
     }
 
-    public async getUserByEmail({ email }: Partial<UserDTO>) {
+    public async getUserByEmail(email: string): Promise<any> {
         try {
             const result = await this.getConnection()
                 .select('*')
                 .from(UserDatabase.TABLE_NAME)
-                .where({ email });
+                .where({ email: email });
 
             if (result[0] === undefined) {
                 throw new Error('This user does not exist');
