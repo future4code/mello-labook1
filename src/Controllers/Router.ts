@@ -33,7 +33,33 @@ class Router {
         }
     }
 
-    async login(req: Request, res: Response) {}
+    async login(req: Request, res: Response) {
+        const { email, password } = req.body;
+        try {
+            ParamChecker.existenceOf(email, password);
+
+            const user = await UserDatabase.getUserByEmail(email);
+
+            await HashManager.compare(password, user.password);
+
+            const token = await Authenticator.generateToken({ id: user.id });
+
+            res.status(200).send({
+                message: 'User logged successfully',
+                token,
+            });
+        } catch (error) {
+            if (error.message === '0001') {
+                res.status(401).send({
+                    message: 'Password is incorrect',
+                });
+            } else {
+                res.status(400).send({
+                    message: error.message,
+                });
+            }
+        }
+    }
 
     async doFriendship(req: Request, res: Response) {}
 

@@ -12,6 +12,7 @@ class Server {
     public routes() {
         this.app.use(express.json());
         this.app.route('/signup').post(Router.signUp);
+        this.app.route('/login').post(Router.login);
     }
 }
 
