@@ -20,7 +20,7 @@ class ParamChecker {
 
     public existenceOf(...params: any[]): void {
         for (const param of params) {
-            if (param === undefined) {
+            if (param === undefined || param === null) {
                 throw new Error('One of the expected parameters is missing.');
             }
         }

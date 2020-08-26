@@ -6,15 +6,11 @@ class Server {
 
     constructor() {
         this.app = express();
-        this.middlewares();
         this.routes();
     }
 
-    public middlewares() {
-        this.app.use(express.json());
-    }
-
     public routes() {
+        this.app.use(express.json());
         this.app.route('/signup').post(Router.signUp);
     }
 }
