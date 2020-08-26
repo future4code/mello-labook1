@@ -14,3 +14,15 @@ export interface FriendShipTransactionsDTO {
     userId: string;
     friendId: string;
 }
+
+export enum PostDTOEventType {
+    EVENT = 'Evento',
+    NORMAL = 'Normal',
+}
+
+export interface PostDTO {
+    photoURL?: string;
+    description: string;
+    createdAt: Date | string;
+    type: PostDTOEventType;
+}
