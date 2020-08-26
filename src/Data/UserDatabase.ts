@@ -19,6 +19,8 @@ class UserDatabase extends BaseDatabase {
                 })
                 .into(UserDatabase.TABLE_NAME);
         } catch (error) {
+            // SQL MESSAGE INCLUDES THE 'DUPLICATE ENTRY' SENTENCE WHEN
+            // UNIQUE KEY EMAIL IS ATTEMPTED TO BE RECREATED
             if (error.message.includes('Duplicate entry'))
                 throw new Error('This user already exists');
         }
