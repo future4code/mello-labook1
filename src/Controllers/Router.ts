@@ -70,7 +70,7 @@ class Router {
         }
     }
 
-    async doFriendship(req: Request, res: Response) {
+    async makeFriendship(req: Request, res: Response) {
         const { newFriendId } = req.body;
         const { authorization } = req.headers;
 
@@ -100,7 +100,29 @@ class Router {
         }
     }
 
-    async undoFriendship(req: Request, res: Response) {}
+    async undoFriendship(req: Request, res: Response) {
+        const { friendId } = req.body;
+        const { authorization } = req.headers;
+
+        try {
+            ParamChecker.existenceOf(friendId, authorization);
+
+            const userId = Authenticator.getData(authorization as string);
+
+            const targetUser = await UserDatabase.getUserById(friendId);
+            await UserDatabase.getUserById(userId.id);
+
+            await FriendshipsDatabase.undoFriendship(userId.id, friendId);
+
+            res.status(201).send({
+                message: `${targetUser.name} is not your friend anymore`,
+            });
+        } catch (error) {
+            res.status(400).send({
+                message: error.message,
+            });
+        }
+    }
 
     async createPost(req: Request, res: Response) {}
 

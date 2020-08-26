@@ -14,7 +14,21 @@ class FriendshipsDatabase extends BaseDatabase {
                 user1: userId,
                 user2: newFriendId,
             })
-            .into(FriendshipsDatabase.TABLE_NAME);
+            .from(FriendshipsDatabase.TABLE_NAME)
+            .where({
+                user1: userId,
+                user2: newFriendId,
+            });
+    }
+
+    async undoFriendship(userId: string, friendId: string): Promise<void> {
+        await this.getConnection()
+            .delete()
+            .from(FriendshipsDatabase.TABLE_NAME)
+            .where({
+                user1: userId,
+                user2: friendId,
+            });
     }
 }
 

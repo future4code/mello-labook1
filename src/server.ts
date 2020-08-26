@@ -13,7 +13,8 @@ class Server {
         this.app.use(express.json());
         this.app.route('/signup').post(Router.signUp);
         this.app.route('/login').post(Router.login);
-        this.app.route('/makefriend').post(Router.doFriendship);
+        this.app.route('/friends/make').post(Router.makeFriendship);
+        this.app.route('/friends/undo').put(Router.undoFriendship);
     }
 }
 
