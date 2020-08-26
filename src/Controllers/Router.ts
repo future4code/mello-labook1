@@ -1,11 +1,12 @@
 import { Request, Response } from 'express';
+import UserDatabase from '../Data/UserDatabase';
 import Authenticator from '../Services/Authenticator';
 import HashManager from '../Services/HashManager';
 import IdGenerator from '../Services/IdGenerator';
 import ParamChecker from '../Services/ParamChecker';
 
 class Router {
-    async signUp(req: Request, res: Response) {
+    async signUp(req: Request, res: Response): Promise<void> {
         try {
             const { email, name, password } = req.body;
 
@@ -17,7 +18,7 @@ class Router {
 
             const hashPassword = await HashManager.hash(password);
 
-            //await UserDatabase.createUser(id, email, name, hashPassword);
+            await UserDatabase.createUser(id, email, name, hashPassword);
 
             const token = Authenticator.generateToken({ id });
 
