@@ -4,7 +4,7 @@
     "description": "",
     "main": "./build/src/index.js",
     "scripts": {
-        "start": "node ./build/src/index.js",
+        "start": "nodemon ./build/src/index.js",
         "build": "tsc && node ./build/src/index.js"
     },
     "author": "",
@@ -22,6 +22,7 @@
         "jest": "^26.1.0",
         "jsonwebtoken": "^8.5.1",
         "knex": "^0.21.5",
+        "mysql": "^2.18.1",
         "nodemon": "^2.0.4",
         "ts-jest": "^26.1.1",
         "ts-node": "^8.6.2",
