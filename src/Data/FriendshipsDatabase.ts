@@ -1,27 +1,27 @@
 import { BaseDatabase } from './BaseDatabase';
+import { FriendShipTransactionsDTO } from '../Types/index';
 
 class FriendshipsDatabase extends BaseDatabase {
     private static TABLE_NAME = 'Friendships';
 
-    async makeFriendship(
-        transaction_id: string,
-        userId: string,
-        newFriendId: string
-    ): Promise<void> {
+    async makeFriendship({
+        transaction_id,
+        userId,
+        friendId,
+    }: FriendShipTransactionsDTO): Promise<void> {
         await this.getConnection()
             .insert({
                 transaction_id,
                 user1: userId,
-                user2: newFriendId,
+                user2: friendId,
             })
-            .from(FriendshipsDatabase.TABLE_NAME)
-            .where({
-                user1: userId,
-                user2: newFriendId,
-            });
+            .from(FriendshipsDatabase.TABLE_NAME);
     }
 
-    async undoFriendship(userId: string, friendId: string): Promise<void> {
+    async undoFriendship({
+        userId,
+        friendId,
+    }: FriendShipTransactionsDTO): Promise<void> {
         await this.getConnection()
             .delete()
             .from(FriendshipsDatabase.TABLE_NAME)

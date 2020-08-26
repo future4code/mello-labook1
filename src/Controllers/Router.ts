@@ -86,11 +86,11 @@ class Router {
 
             const transactionId = IdGenerator.generateId();
 
-            await FriendshipsDatabase.makeFriendship(
-                transactionId,
-                userId.id,
-                newFriendId
-            );
+            await FriendshipsDatabase.makeFriendship({
+                transaction_id: transactionId,
+                userId: userId.id,
+                friendId: newFriendId,
+            });
 
             res.status(201).send({
                 message: `${targetUser.name} is now your friend`,
@@ -114,9 +114,12 @@ class Router {
             const targetUser = await UserDatabase.getUserById({ id: friendId });
             await UserDatabase.getUserById({ id: userId.id });
 
-            await FriendshipsDatabase.undoFriendship(userId.id, friendId);
+            await FriendshipsDatabase.undoFriendship({
+                userId: userId.id,
+                friendId,
+            });
 
-            res.status(201).send({
+            res.status(200).send({
                 message: `${targetUser.name} is not your friend anymore`,
             });
         } catch (error) {

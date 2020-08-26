@@ -8,3 +8,9 @@ export interface UserDTO {
     name: string;
     password: string;
 }
+
+export interface FriendShipTransactionsDTO {
+    transaction_id?: string;
+    userId: string;
+    friendId: string;
+}
