@@ -10,7 +10,7 @@ class HashManager {
     public async compare(text: string, hash: string): Promise<void> {
         const authenticated = await bcrypt.compare(text, hash);
 
-        if (!authenticated) throw new Error('0001');
+        if (!authenticated) throw new Error('NO MATCH');
     }
 }
 
