@@ -5,12 +5,12 @@ import HashManager from '../Services/HashManager';
 import IdGenerator from '../Services/IdGenerator';
 import ParamChecker from '../Services/ParamChecker';
 import User from '../Models/User';
+import FriendshipsDatabase from '../Data/FriendshipsDatabase';
 
 class Router {
     async signUp(req: Request, res: Response): Promise<void> {
+        const { email, name, password } = req.body;
         try {
-            const { email, name, password } = req.body;
-
             ParamChecker.existenceOf(name, email, password);
             ParamChecker.email(email);
             ParamChecker.lenghtOf('password', password, 6);
@@ -47,7 +47,7 @@ class Router {
         try {
             ParamChecker.existenceOf(email, password);
 
-            const user = await UserDatabase.getUserByEmail(email);
+            const user = await UserDatabase.getUserByEmail(email as string);
 
             await HashManager.compare(password, user.password);
 
@@ -70,7 +70,35 @@ class Router {
         }
     }
 
-    async doFriendship(req: Request, res: Response) {}
+    async doFriendship(req: Request, res: Response) {
+        const { newFriendId } = req.body;
+        const { authorization } = req.headers;
+
+        try {
+            ParamChecker.existenceOf(newFriendId, authorization);
+
+            const userId = Authenticator.getData(authorization as string);
+
+            const targetUser = await UserDatabase.getUserById(newFriendId);
+            await UserDatabase.getUserById(userId.id);
+
+            const transactionId = IdGenerator.generateId();
+
+            await FriendshipsDatabase.makeFriendship(
+                transactionId,
+                userId.id,
+                newFriendId
+            );
+
+            res.status(201).send({
+                message: `${targetUser.name} is now your friend`,
+            });
+        } catch (error) {
+            res.status(400).send({
+                message: error.message,
+            });
+        }
+    }
 
     async undoFriendship(req: Request, res: Response) {}
 
