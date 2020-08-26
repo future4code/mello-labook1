@@ -41,6 +41,23 @@ class UserDatabase extends BaseDatabase {
             throw error;
         }
     }
+
+    public async getUserById(id: string): Promise<any> {
+        try {
+            const result = await this.getConnection()
+                .select('*')
+                .from(UserDatabase.TABLE_NAME)
+                .where({ id });
+
+            if (result[0] === undefined) {
+                throw new Error('This user does not exist');
+            } else {
+                return result[0];
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
 }
 
 export default new UserDatabase();
