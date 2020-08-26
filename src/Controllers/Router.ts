@@ -47,7 +47,7 @@ class Router {
         try {
             ParamChecker.existenceOf(email, password);
 
-            const user = await UserDatabase.getUserByEmail(email as string);
+            const user = await UserDatabase.getUserByEmail({ email });
 
             await HashManager.compare(password, user.password);
 
@@ -79,8 +79,10 @@ class Router {
 
             const userId = Authenticator.getData(authorization as string);
 
-            const targetUser = await UserDatabase.getUserById(newFriendId);
-            await UserDatabase.getUserById(userId.id);
+            const targetUser = await UserDatabase.getUserById({
+                id: newFriendId,
+            });
+            await UserDatabase.getUserById({ id: userId.id });
 
             const transactionId = IdGenerator.generateId();
 
@@ -109,8 +111,8 @@ class Router {
 
             const userId = Authenticator.getData(authorization as string);
 
-            const targetUser = await UserDatabase.getUserById(friendId);
-            await UserDatabase.getUserById(userId.id);
+            const targetUser = await UserDatabase.getUserById({ id: friendId });
+            await UserDatabase.getUserById({ id: userId.id });
 
             await FriendshipsDatabase.undoFriendship(userId.id, friendId);
 

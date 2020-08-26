@@ -25,7 +25,9 @@ class UserDatabase extends BaseDatabase {
         }
     }
 
-    public async getUserByEmail(email: string): Promise<any> {
+    public async getUserByEmail({
+        email,
+    }: Pick<UserDTO, 'email'>): Promise<any> {
         try {
             const result = await this.getConnection()
                 .select('*')
@@ -42,7 +44,7 @@ class UserDatabase extends BaseDatabase {
         }
     }
 
-    public async getUserById(id: string): Promise<any> {
+    public async getUserById({ id }: Pick<UserDTO, 'id'>): Promise<any> {
         try {
             const result = await this.getConnection()
                 .select('*')
