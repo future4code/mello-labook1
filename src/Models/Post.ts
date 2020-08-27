@@ -1,11 +1,11 @@
-import { PostDTO, PostDTOEventType } from '../Types/index';
+import { PostDTO } from '../Types/index';
 
 class Post implements PostDTO {
     constructor(
-        public photoURL: string,
+        public photoURL: string = 'none',
         public description: string,
         public createdAt: Date | string,
-        public type: PostDTOEventType = PostDTOEventType.NORMAL
+        public type: 'Normal' | 'Evento' = 'Normal'
     ) {
         return this;
     }
