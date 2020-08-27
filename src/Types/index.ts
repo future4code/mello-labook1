@@ -20,4 +20,5 @@ export interface PostDTO {
     description: string;
     createdAt: Date | string;
     type: 'Evento' | 'Normal';
+    creator: string;
 }

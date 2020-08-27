@@ -5,7 +5,8 @@ class Post implements PostDTO {
         public photoURL: string = 'none',
         public description: string,
         public createdAt: Date | string,
-        public type: 'Normal' | 'Evento' = 'Normal'
+        public type: 'Normal' | 'Evento' = 'Normal',
+        public creator: string
     ) {
         return this;
     }
