@@ -1,6 +1,7 @@
 import { BaseDatabase } from './BaseDatabase';
 import { PostDTO, UserDTO } from '../Types/index';
 import ParamConverter from '../Services/ParamConverter';
+import Post from '../Models/Post';
 
 class PostDatabase extends BaseDatabase {
     private static TABLE_NAME = 'Posts';
@@ -73,7 +74,10 @@ class PostDatabase extends BaseDatabase {
             const result = await this.getConnection().raw(`
                 SELECT 
                 
-                P.id as postId, P.photo_url as photoUrl, P.description, P.created_at as createdAt,
+                P.id as postId, P.photo_url as photoUrl,
+                P.description, P.created_at as createdAt,
+                P.type,
+                
                 U.name as username, U.id as userId 
 
                 FROM Posts P
@@ -83,11 +87,30 @@ class PostDatabase extends BaseDatabase {
                 JOIN Friendships F ON F.user2 = U.id
 
                 WHERE F.user1 = "${id}" 
-                
+
                 ORDER BY P.created_at DESC
                 `);
 
-            return result[0];
+            return result[0].map((item: any) => {
+                
+                const post = new Post(
+                    item.postId,
+                    item.photoUrl,
+                    item.description,
+                    item.createdAt,
+                    item.type,
+                    item.creator
+                );
+
+                const data = {
+                    post,
+                    username: item.username,
+                    userID: item.userId,
+                    // implement comments
+                };
+
+                return data;
+            });
         } catch (error) {
             throw new Error(error);
         }
