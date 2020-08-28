@@ -136,7 +136,9 @@ class Router {
         const { authorization } = req.headers;
 
         try {
+            // Checks only required parameters
             ParamChecker.existenceOf(description, createdAt, authorization);
+            ParamChecker.dateFormat(createdAt);
 
             const id = IdGenerator.generateId();
 

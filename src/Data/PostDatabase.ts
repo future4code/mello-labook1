@@ -92,7 +92,6 @@ class PostDatabase extends BaseDatabase {
                 `);
 
             return result[0].map((item: any) => {
-                
                 const post = new Post(
                     item.postId,
                     item.photoUrl,
