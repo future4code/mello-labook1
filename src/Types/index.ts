@@ -10,14 +10,16 @@ export interface UserDTO {
 }
 
 export interface FriendShipTransactionsDTO {
-    transaction_id?: string;
+    transaction_id: string;
     userId: string;
     friendId: string;
 }
 
 export interface PostDTO {
+    id: string;
     photoURL: string;
     description: string;
+    likes: number;
     createdAt: Date | string;
     type: 'Evento' | 'Normal';
     creator: string;
