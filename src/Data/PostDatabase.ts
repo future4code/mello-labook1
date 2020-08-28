@@ -5,6 +5,15 @@ import ParamConverter from '../Services/ParamConverter';
 class PostDatabase extends BaseDatabase {
     private static TABLE_NAME = 'Posts';
 
+    private async getPost(id: string): Promise<any> {
+        const result = await this.getConnection()
+            .select('*')
+            .from(PostDatabase.TABLE_NAME)
+            .where({ id });
+
+        return result[0];
+    }
+
     async createPost({
         id,
         photoURL,
@@ -12,7 +21,7 @@ class PostDatabase extends BaseDatabase {
         createdAt,
         type,
         creator,
-    }: PostDTO) {
+    }: PostDTO): Promise<void> {
         try {
             const parsedDate = ParamConverter.dateToSQLStandard(
                 createdAt as string
@@ -32,6 +41,9 @@ class PostDatabase extends BaseDatabase {
             throw new Error(error);
         }
     }
+
+
+    async
 }
 
 export default new PostDatabase();
