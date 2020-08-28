@@ -18,6 +18,7 @@ class Server {
         this.app.route('/posts/create').post(Router.createPost);
         this.app.route('/posts/:postId/like').patch(Router.likePost);
         this.app.route('/posts/:postId/dislike').patch(Router.dislikePost);
+        this.app.route('/feed').get(Router.getFeed);
     }
 }
 

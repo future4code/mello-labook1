@@ -198,7 +198,25 @@ class Router {
         }
     }
 
-    async getFeed(req: Request, res: Response) {}
+    async getFeed(req: Request, res: Response) {
+        const { authorization } = req.headers;
+
+        try {
+            ParamChecker.existenceOf(authorization);
+
+            const userId = Authenticator.getData(authorization as string);
+
+            const feed = await PostDatabase.getFeed({ id: userId.id });
+
+            res.status(200).send({
+                result: feed,
+            });
+        } catch (error) {
+            res.status(400).send({
+                message: error.message,
+            });
+        }
+    }
 
     async getFeedByyType(req: Request, res: Response) {}
 
