@@ -47,7 +47,6 @@ class FriendshipsDatabase extends BaseDatabase {
         } catch (error) {
             throw new Error(error);
         }
-        FriendshipsDatabase.destroyConnection();
     }
 
     public async undoFriendship({
@@ -69,7 +68,6 @@ class FriendshipsDatabase extends BaseDatabase {
         } catch (error) {
             throw new Error(error);
         }
-        FriendshipsDatabase.destroyConnection();
     }
 }
 

@@ -165,7 +165,7 @@ class Router {
 
             Authenticator.checkAuth(authorization as string);
 
-            await PostDatabase.likePost(postId);
+            await PostDatabase.likePost({ id: postId });
 
             res.status(200).send({
                 message: `You liked this post`,
@@ -186,7 +186,7 @@ class Router {
 
             Authenticator.checkAuth(authorization as string);
 
-            await PostDatabase.dislikePost(postId);
+            await PostDatabase.dislikePost({ id: postId });
 
             res.status(200).send({
                 message: `You disliked this post`,

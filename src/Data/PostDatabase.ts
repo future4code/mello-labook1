@@ -1,11 +1,11 @@
 import { BaseDatabase } from './BaseDatabase';
-import { PostDTO } from '../Types/index';
+import { PostDTO, UserDTO } from '../Types/index';
 import ParamConverter from '../Services/ParamConverter';
 
 class PostDatabase extends BaseDatabase {
     private static TABLE_NAME = 'Posts';
 
-    private async getPost(id: string): Promise<any> {
+    private async getPost({ id }: Pick<PostDTO, 'id'>): Promise<any> {
         const result = await this.getConnection()
             .select('*')
             .from(PostDatabase.TABLE_NAME)
@@ -42,31 +42,33 @@ class PostDatabase extends BaseDatabase {
         }
     }
 
-    async likePost(postId: string) {
+    async likePost({ id }: Pick<PostDTO, 'id'>): Promise<void> {
         try {
-            const result = await this.getPost(postId);
+            const result = await this.getPost({ id });
 
             await this.getConnection()
                 .into(PostDatabase.TABLE_NAME)
-                .where({ id: postId })
+                .where({ id })
                 .update({ likes: result.likes + 1 });
         } catch (error) {
             throw new Error(error);
         }
     }
 
-    async dislikePost(postId: string) {
+    async dislikePost({ id }: Pick<PostDTO, 'id'>): Promise<void> {
         try {
-            const result = await this.getPost(postId);
+            const result = await this.getPost({ id });
 
             await this.getConnection()
                 .into(PostDatabase.TABLE_NAME)
-                .where({ id: postId })
+                .where({ id })
                 .update({ likes: result.likes - 1 });
         } catch (error) {
             throw new Error(error);
         }
     }
+
+    async getFeed({ id }: Pick<UserDTO, 'id'>): Promise<any> {}
 }
 
 export default new PostDatabase();
