@@ -20,8 +20,11 @@ class UserDatabase extends BaseDatabase {
                 })
                 .into(UserDatabase.TABLE_NAME);
         } catch (error) {
-            if (error.message.includes('Duplicate entry'))
+            if (error.message.includes('Duplicate entry')) {
                 throw new Error('This user already exists');
+            } else {
+                throw new Error(error);
+            }
         }
     }
 
