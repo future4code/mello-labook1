@@ -77,7 +77,7 @@ class Router {
         const { authorization } = req.headers;
 
         try {
-            ParamChecker.existenceOf(newFriendId, authorization);
+            ParamChecker.existenceOf(newFriendId);
 
             const userId = Authenticator.getData(authorization as string);
 
@@ -109,7 +109,7 @@ class Router {
         const { authorization } = req.headers;
 
         try {
-            ParamChecker.existenceOf(friendId, authorization);
+            ParamChecker.existenceOf(friendId);
 
             const userId = Authenticator.getData(authorization as string);
 
@@ -137,7 +137,7 @@ class Router {
 
         try {
             // Checks only required parameters
-            ParamChecker.existenceOf(description, createdAt, authorization);
+            ParamChecker.existenceOf(description, createdAt);
             ParamChecker.dateFormat(createdAt);
 
             const id = IdGenerator.generateId();
@@ -163,7 +163,7 @@ class Router {
         const { authorization } = req.headers;
 
         try {
-            ParamChecker.existenceOf(postId, authorization);
+            ParamChecker.existenceOf(postId);
 
             Authenticator.checkAuth(authorization as string);
 
@@ -184,7 +184,7 @@ class Router {
         const { authorization } = req.headers;
 
         try {
-            ParamChecker.existenceOf(postId, authorization);
+            ParamChecker.existenceOf(postId);
 
             Authenticator.checkAuth(authorization as string);
 
@@ -204,8 +204,6 @@ class Router {
         const { authorization } = req.headers;
 
         try {
-            ParamChecker.existenceOf(authorization);
-
             const userId = Authenticator.getData(authorization as string);
 
             const feed = await PostDatabase.getFeed({ id: userId.id });
@@ -220,7 +218,27 @@ class Router {
         }
     }
 
-    async getFeedByyType(req: Request, res: Response) {}
+    async getFeedByType(req: Request, res: Response) {
+        const { type } = req.query;
+        const { authorization } = req.headers;
+
+        try {
+            const userId = Authenticator.getData(authorization as string);
+
+            const feed = await PostDatabase.getFeedByType(
+                userId.id,
+                type as string
+            );
+
+            res.status(200).send({
+                result: feed,
+            });
+        } catch (error) {
+            res.status(400).send({
+                message: error.message,
+            });
+        }
+    }
 
     async getFeedByPage(req: Request, res: Response) {}
 
