@@ -146,7 +146,7 @@ class Router {
                 new Post(id, photoURL, description, createdAt, type, userId.id)
             );
 
-            res.status(200).send({
+            res.status(201).send({
                 message: `Your post was successfully created`,
             });
         } catch (error) {
@@ -177,7 +177,26 @@ class Router {
         }
     }
 
-    async unlikePost(req: Request, res: Response) {}
+    async dislikePost(req: Request, res: Response) {
+        const { postId } = req.params;
+        const { authorization } = req.headers;
+
+        try {
+            ParamChecker.existenceOf(postId, authorization);
+
+            Authenticator.checkAuth(authorization as string);
+
+            await PostDatabase.dislikePost(postId);
+
+            res.status(200).send({
+                message: `You disliked this post`,
+            });
+        } catch (error) {
+            res.status(400).send({
+                message: error.message,
+            });
+        }
+    }
 
     async getFeed(req: Request, res: Response) {}
 

@@ -17,6 +17,7 @@ class Server {
         this.app.route('/friends/undo').delete(Router.undoFriendship);
         this.app.route('/posts/create').post(Router.createPost);
         this.app.route('/posts/:postId/like').patch(Router.likePost);
+        this.app.route('/posts/:postId/dislike').patch(Router.dislikePost);
     }
 }
 
