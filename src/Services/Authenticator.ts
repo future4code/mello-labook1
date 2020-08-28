@@ -24,6 +24,14 @@ class Authenticator {
             throw new Error('Authentication is invalid or expired');
         }
     }
+
+    public checkAuth(token: string): void {
+        try {
+            jwt.verify(token, process.env.JWT_KEY as string);
+        } catch (error) {
+            throw new Error('Authentication is invalid or expired');
+        }
+    }
 }
 
 export default new Authenticator();
