@@ -13,8 +13,8 @@ class Server {
         this.app.use(express.json());
         this.app.route('/signup').post(Router.signUp);
         this.app.route('/login').post(Router.login);
-        this.app.route('/users/:newFriendId/add').post(Router.makeFriendship);
-        this.app.route('/users/:friendId/remove').delete(Router.undoFriendship);
+        this.app.route('/users/:newFriendId/add').put(Router.makeFriendship);
+        this.app.route('/users/:friendId/remove').put(Router.undoFriendship);
         this.app.route('/posts/create').post(Router.createPost);
         this.app.route('/posts/:postId/like').patch(Router.likePost);
         this.app.route('/posts/:postId/dislike').patch(Router.dislikePost);
