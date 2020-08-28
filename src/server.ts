@@ -15,6 +15,7 @@ class Server {
         this.app.route('/login').post(Router.login);
         this.app.route('/friends/make').post(Router.makeFriendship);
         this.app.route('/friends/undo').delete(Router.undoFriendship);
+        this.app.route('/posts/create').post(Router.createPost);
     }
 }
 

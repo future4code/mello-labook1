@@ -6,6 +6,8 @@ import IdGenerator from '../Services/IdGenerator';
 import ParamChecker from '../Services/ParamChecker';
 import User from '../Models/User';
 import FriendshipsDatabase from '../Data/FriendshipsDatabase';
+import PostDatabase from '../Data/PostDatabase';
+import Post from '../Models/Post';
 
 class Router {
     async signUp(req: Request, res: Response): Promise<void> {
@@ -129,7 +131,30 @@ class Router {
         }
     }
 
-    async createPost(req: Request, res: Response) {}
+    async createPost(req: Request, res: Response) {
+        const { photoURL, description, createdAt, type } = req.body;
+        const { authorization } = req.headers;
+
+        try {
+            ParamChecker.existenceOf(description, createdAt, authorization);
+
+            const id = IdGenerator.generateId();
+
+            const userId = Authenticator.getData(authorization as string);
+
+            PostDatabase.createPost(
+                new Post(id, photoURL, description, createdAt, type, userId.id)
+            );
+
+            res.status(200).send({
+                message: `Your post was successfully created`,
+            });
+        } catch (error) {
+            res.status(400).send({
+                message: error.message,
+            });
+        }
+    }
 
     async getFeed(req: Request, res: Response) {}
 
