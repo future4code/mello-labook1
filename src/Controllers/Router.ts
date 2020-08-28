@@ -73,7 +73,7 @@ class Router {
     }
 
     async makeFriendship(req: Request, res: Response) {
-        const { newFriendId } = req.body;
+        const { newFriendId } = req.params;
         const { authorization } = req.headers;
 
         try {
@@ -105,7 +105,7 @@ class Router {
     }
 
     async undoFriendship(req: Request, res: Response) {
-        const { friendId } = req.body;
+        const { friendId } = req.params;
         const { authorization } = req.headers;
 
         try {
