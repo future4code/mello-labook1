@@ -114,6 +114,50 @@ class PostDatabase extends BaseDatabase {
             throw new Error(error);
         }
     }
+
+    async getFeedByType(UserId: string, type: string): Promise<any> {
+        try {
+            const result = await this.getConnection().raw(`
+                SELECT
+                
+                P.id as postId, P.photo_url as photoUrl, P.description,
+                P.created_at as createdAt, P.type, U.name as username, U.id as userId
+                
+                FROM
+                
+                Posts P
+                
+                JOIN
+                
+                Users U ON P.creator = U.id
+                
+                WHERE
+
+                P.type = "${type}" ORDER BY P.created_at DESC`);
+
+            return result[0].map((item: any) => {
+                const post = new Post(
+                    item.postId,
+                    item.photoUrl,
+                    item.description,
+                    item.createdAt,
+                    item.type,
+                    item.creator
+                );
+
+                const data = {
+                    post,
+                    username: item.username,
+                    userID: item.userId,
+                    // implement comments
+                };
+
+                return data;
+            });
+        } catch (error) {
+            throw new Error(error);
+        }
+    }
 }
 
 export default new PostDatabase();
