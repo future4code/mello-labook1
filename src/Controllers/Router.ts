@@ -142,7 +142,7 @@ class Router {
 
             const userId = Authenticator.getData(authorization as string);
 
-            PostDatabase.createPost(
+            await PostDatabase.createPost(
                 new Post(id, photoURL, description, createdAt, type, userId.id)
             );
 
@@ -156,15 +156,34 @@ class Router {
         }
     }
 
+    async likePost(req: Request, res: Response) {
+        const { postId } = req.params;
+        const { authorization } = req.headers;
+
+        try {
+            ParamChecker.existenceOf(postId, authorization);
+
+            Authenticator.checkAuth(authorization as string);
+
+            await PostDatabase.likePost(postId);
+
+            res.status(200).send({
+                message: `You liked this post`,
+            });
+        } catch (error) {
+            res.status(400).send({
+                message: error.message,
+            });
+        }
+    }
+
+    async unlikePost(req: Request, res: Response) {}
+
     async getFeed(req: Request, res: Response) {}
 
     async getFeedByyType(req: Request, res: Response) {}
 
     async getFeedByPage(req: Request, res: Response) {}
-
-    async likePost(req: Request, res: Response) {}
-
-    async unlikePost(req: Request, res: Response) {}
 
     async commentPost(req: Request, res: Response) {}
 

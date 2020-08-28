@@ -42,8 +42,18 @@ class PostDatabase extends BaseDatabase {
         }
     }
 
+    async likePost(postId: string) {
+        try {
+            const result = await this.getPost(postId);
 
-    async
+            await this.getConnection()
+                .into(PostDatabase.TABLE_NAME)
+                .where({ id: postId })
+                .update({ likes: result.likes + 1 });
+        } catch (error) {
+            throw new Error(error);
+        }
+    }
 }
 
 export default new PostDatabase();
