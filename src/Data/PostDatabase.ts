@@ -71,12 +71,19 @@ class PostDatabase extends BaseDatabase {
     async getFeed({ id }: Pick<UserDTO, 'id'>): Promise<any> {
         try {
             const result = await this.getConnection().raw(`
-                SELECT P.id as postId, P.photo_url as photoUrl, P.description, P.created_at as createdAt,
+                SELECT 
+                
+                P.id as postId, P.photo_url as photoUrl, P.description, P.created_at as createdAt,
                 U.name as username, U.id as userId 
+
                 FROM Posts P
+
                 JOIN Users U ON P.creator = U.id
+
                 JOIN Friendships F ON F.user2 = U.id
+
                 WHERE F.user1 = "${id}" 
+                
                 ORDER BY P.created_at DESC
                 `);
 
