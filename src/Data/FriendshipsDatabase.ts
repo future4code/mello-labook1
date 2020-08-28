@@ -7,7 +7,7 @@ class FriendshipsDatabase extends BaseDatabase {
     private async checkFriendShipExistence({
         userId,
         friendId,
-    }: FriendShipTransactionsDTO): Promise<boolean> {
+    }: Omit<FriendShipTransactionsDTO, 'transaction_id'>): Promise<boolean> {
         try {
             const result = await this.getConnection()
                 .select('user1', 'user2')
@@ -47,12 +47,13 @@ class FriendshipsDatabase extends BaseDatabase {
         } catch (error) {
             throw new Error(error);
         }
+        FriendshipsDatabase.destroyConnection();
     }
 
     public async undoFriendship({
         userId,
         friendId,
-    }: FriendShipTransactionsDTO): Promise<void> {
+    }: Omit<FriendShipTransactionsDTO, 'transaction_id'>): Promise<void> {
         try {
             if (!(await this.checkFriendShipExistence({ userId, friendId }))) {
                 throw 'You are not a friend of this user already';
@@ -68,6 +69,7 @@ class FriendshipsDatabase extends BaseDatabase {
         } catch (error) {
             throw new Error(error);
         }
+        FriendshipsDatabase.destroyConnection();
     }
 }
 
