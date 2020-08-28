@@ -24,3 +24,11 @@ export interface PostDTO {
     type: 'Evento' | 'Normal';
     creator: string;
 }
+
+export interface CommentDTO {
+    id: string;
+    commentCreator: string;
+    content: string;
+    createdAt: Date | string;
+    postId: string;
+}
