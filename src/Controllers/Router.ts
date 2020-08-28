@@ -8,6 +8,7 @@ import User from '../Models/User';
 import FriendshipsDatabase from '../Data/FriendshipsDatabase';
 import PostDatabase from '../Data/PostDatabase';
 import Post from '../Models/Post';
+import CommentsDatabase from '../Data/CommentsDatabase';
 
 class Router {
     async signUp(req: Request, res: Response): Promise<void> {
@@ -223,12 +224,9 @@ class Router {
         const { authorization } = req.headers;
 
         try {
-            const userId = Authenticator.getData(authorization as string);
+            Authenticator.getData(authorization as string);
 
-            const feed = await PostDatabase.getFeedByType(
-                userId.id,
-                type as string
-            );
+            const feed = await PostDatabase.getFeedByType(type as string);
 
             res.status(200).send({
                 result: feed,
@@ -242,7 +240,35 @@ class Router {
 
     async getFeedByPage(req: Request, res: Response) {}
 
-    async commentPost(req: Request, res: Response) {}
+    async commentPost(req: Request, res: Response) {
+        const { postId } = req.params;
+        const { authorization } = req.headers;
+        const { content, createdAt } = req.body;
+
+        try {
+            ParamChecker.existenceOf(content, createdAt);
+
+            const userId = Authenticator.getData(authorization as string);
+
+            const id = IdGenerator.generateId();
+
+            await CommentsDatabase.createComment({
+                id,
+                commentCreator: userId.id,
+                content,
+                createdAt,
+                postId,
+            });
+
+            res.status(201).send({
+                message: 'Comment created successfully',
+            });
+        } catch (error) {
+            res.status(400).send({
+                message: error.message,
+            });
+        }
+    }
 
     async refreshUserToken(req: Request, res: Response) {}
 }
