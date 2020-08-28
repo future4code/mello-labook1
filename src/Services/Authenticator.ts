@@ -12,10 +12,17 @@ class Authenticator {
     }
 
     public getData(token: string): AuthDTO {
-        const data = jwt.verify(token, process.env.JWT_KEY as string) as any;
-        return {
-            id: data.id,
-        };
+        try {
+            const data = jwt.verify(
+                token,
+                process.env.JWT_KEY as string
+            ) as any;
+            return {
+                id: data.id,
+            };
+        } catch (error) {
+            throw new Error('Authentication is invalid or expired');
+        }
     }
 }
 
