@@ -17,7 +17,7 @@ export interface FriendShipTransactionsDTO {
 
 export interface PostDTO {
     id: string;
-    photoURL: string;
+    photoURL: string | null;
     description: string;
     likes: number;
     createdAt: Date | string;
