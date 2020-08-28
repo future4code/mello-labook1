@@ -43,7 +43,7 @@ class FriendshipsDatabase extends BaseDatabase {
                     user1: userId,
                     user2: friendId,
                 })
-                .from(FriendshipsDatabase.TABLE_NAME);
+                .into(FriendshipsDatabase.TABLE_NAME);
         } catch (error) {
             throw new Error(error);
         }
