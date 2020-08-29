@@ -2,6 +2,7 @@ import { BaseDatabase } from './BaseDatabase';
 import { PostDTO, UserDTO } from '../Types/index';
 import ParamConverter from '../Services/ParamConverter';
 import Post from '../Models/Post';
+import CommentsDatabase from './CommentsDatabase';
 
 class PostDatabase extends BaseDatabase {
     private static TABLE_NAME = 'Posts';
@@ -85,7 +86,7 @@ class PostDatabase extends BaseDatabase {
                 JOIN Users U ON P.creator = U.id
 
                 JOIN Friendships F ON F.user2 = U.id
-
+                
                 WHERE F.user1 = "${id}" 
 
                 ORDER BY P.created_at DESC
@@ -105,7 +106,6 @@ class PostDatabase extends BaseDatabase {
                     post,
                     username: item.username,
                     userID: item.userId,
-                    // implement comments
                 };
 
                 return data;
@@ -115,7 +115,7 @@ class PostDatabase extends BaseDatabase {
         }
     }
 
-    async getFeedByType(UserId: string, type: string): Promise<any> {
+    async getFeedByType(type: string): Promise<any> {
         try {
             const result = await this.getConnection().raw(`
                 SELECT
@@ -149,7 +149,6 @@ class PostDatabase extends BaseDatabase {
                     post,
                     username: item.username,
                     userID: item.userId,
-                    // implement comments
                 };
 
                 return data;

@@ -1,8 +1,8 @@
 import ParamConverter from '../Services/ParamConverter';
-import { CommentDTO } from '../Types';
+import { CommentDTO, PostDTO } from '../Types';
 import { BaseDatabase } from './BaseDatabase';
 
-class FriendshipsDatabase extends BaseDatabase {
+class CommentsDatabase extends BaseDatabase {
     private static TABLE_NAME = 'Posts_Comments';
 
     async createComment({
@@ -25,13 +25,26 @@ class FriendshipsDatabase extends BaseDatabase {
                     created_at: parsedDate,
                     post_id: postId,
                 })
-                .from(FriendshipsDatabase.TABLE_NAME);
+                .from(CommentsDatabase.TABLE_NAME);
         } catch (error) {
             throw new Error(error);
         }
     }
 
-    async getPostComments
+    async getPostComments({ id }: Pick<PostDTO, 'id'>) {
+        try {
+            const result = await this.getConnection()
+                .select('*')
+                .from(CommentsDatabase.TABLE_NAME)
+                .where({ post_id: id });
+
+                
+            
+            return result[0];
+        } catch (error) {
+            throw new Error(error);
+        }
+    }
 }
 
-export default new FriendshipsDatabase();
+export default new CommentsDatabase();
